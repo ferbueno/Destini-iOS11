@@ -33,6 +33,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var topButton: UIButton!         // Has TAG = 1
     @IBOutlet weak var bottomButton: UIButton!      // Has TAG = 2
     @IBOutlet weak var storyTextView: UILabel!
+    var storyIndex : Int = 1
     
     // TODO Step 5: Initialise instance variables here
     
@@ -41,6 +42,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        storyTextView.text = story1
+        updateButton(button: topButton, text: answer1a)
+        updateButton(button: bottomButton, text: answer1b)
         
         
         // TODO Step 3: Set the text for the storyTextView, topButton, bottomButton, and to T1_Story, T1_Ans1, and T1_Ans2
@@ -50,12 +54,55 @@ class ViewController: UIViewController {
     
     // User presses one of the buttons
     @IBAction func buttonPressed(_ sender: UIButton) {
-    
-        // TODO Step 4: Write an IF-Statement to update the views
-                
-        // TODO Step 6: Modify the IF-Statement to complete the story
         
+        if sender.tag == 1 {
+            if storyIndex == 1 || storyIndex == 2 {
+                updateStory(storyText: story3)
+                updateButton(button: topButton, text: answer3a)
+                updateButton(button: bottomButton, text: answer3b)
+                storyIndex = 3
+            } else {
+                updateStory(storyText: story6)
+                storyIndex = 6
+            }
+        } else {
+            if storyIndex == 1 {
+                updateStory(storyText: story2)
+                updateButton(button: topButton, text: answer2a)
+                updateButton(button: bottomButton, text: answer2b)
+                storyIndex = 2
+            } else if storyIndex == 3 {
+                updateStory(storyText: story5)
+                storyIndex = 5
+            } else {
+                updateStory(storyText: story4)
+                storyIndex = 4
+            }
+        }
+        if storyIndex >= 4 {
+            let alert = UIAlertController(title: "Congrats!", message: "You've finished the game!", preferredStyle: UIAlertControllerStyle.alert)
+            let startOverAction = UIAlertAction(title: "Start Over", style: UIAlertActionStyle.default) { (UIAlertAction) in
+                self.startOver()
+            }
+            alert.addAction(startOverAction)
+            present(alert, animated: true)
+        }
+        
+    }
     
+    func updateStory(storyText: String){
+        storyTextView.text = storyText
+    }
+    
+    func updateButton(button: UIButton, text: String){
+        button.setTitle(text, for: UIControlState.normal)
+    }
+    
+    func startOver(){
+        storyIndex = 1
+        updateStory(storyText: story1)
+        updateButton(button: topButton, text: answer1a)
+        updateButton(button: bottomButton, text: answer1b)
     }
     
 
